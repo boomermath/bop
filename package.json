@@ -1,0 +1,28 @@
+{
+  "name": "fork-window-music",
+  "version": "1.0.0",
+  "description": "music bot for a small discord server",
+  "main": "index.js",
+  "scripts": {
+    "test": "node ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/boomermath/bop-js.git"
+  },
+  "keywords": [
+    "discord",
+    "bot",
+    "music"
+  ],
+  "author": "boomermath",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/boomermath/bop-js/issues"
+  },
+  "homepage": "https://github.com/boomermath/bop-js#readme",
+  "dependencies": {
+    "discord.js": "^13.1.0",
+    "dotenv": "^10.0.0"
+  }
+}
