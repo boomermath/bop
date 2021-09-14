@@ -4,7 +4,6 @@ import BopClient from "./Client";
 
 interface baseOpts {
   name?: string;
-  client?: BopClient;
   enabled?: boolean;
 }
 

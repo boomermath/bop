@@ -11,16 +11,19 @@ class Store<M extends Module> extends Collection<string, M> {
   constructor(client: BopClient, directory: string) {
     super();
     this.client = client;
-    this.directory = directory;
+    this.directory = join(process.cwd(), directory);
   }
 
   async loadAll(): Promise<M[]> {
-    this.clear()
-    return Promise.all(Store.getModules(this.directory).map((mod) => this.load(mod)));
+    this.clear();
+    console.log(Store.getModules(this.directory))
+    return Promise.all(
+      Store.getModules(this.directory).map((mod) => this.load(mod))
+    );
   }
 
-  async init() : Promise<void> {
-    this.mapValues(m => m.enabled ? m.init() : this.delete(m));
+  async init(): Promise<void> {
+    this.mapValues((m) => (m.enabled ? m.init() : this.delete(m)));
   }
 
   protected async load(dir: string): Promise<M> {
@@ -37,14 +40,16 @@ class Store<M extends Module> extends Collection<string, M> {
     return mod;
   }
 
-  delete(name: string | M) : boolean {
-      return super.delete(typeof name === "string" ? name : name.name);
+  delete(name: string | M): boolean {
+    return super.delete(typeof name === "string" ? name : name.name);
   }
 
   static getModules(dir: string): string[] {
-    return readdirSync(dir).filter((file) =>
-      statSync(join(dir, file)).isFile()
-    );
+    return readdirSync(dir)
+      .filter(
+        (file) => statSync(join(dir, file)).isFile() && file.endsWith(".js")
+      )
+      .map((file) => join(dir, file));
   }
 }
 
@@ -92,7 +97,7 @@ export class EventStore extends Store<Event> {
   async load(dir: string): Promise<Event> {
     const event = await super.load(dir);
     const eventFunction = event.main.bind(event);
-    this.client[event.once ? "once" : "on"](event.name, eventFunction)
+    this.client[event.once ? "once" : "on"](event.name, eventFunction);
     return event;
   }
 }

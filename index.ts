@@ -1,5 +1,6 @@
-require("dotenv").config();
-const BopClient = require("./lib/Client");
-const client = new BopClient()
+import { config } from "dotenv";
+import BopClient from "./lib/Client";
+config();
 
+const client = new BopClient();
 client.start();
