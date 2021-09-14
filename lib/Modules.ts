@@ -1,4 +1,4 @@
-import { Message } from "discord.js";
+import { Awaited, Message } from "discord.js";
 import { sep } from "path";
 import BopClient from "./Client";
 
@@ -23,7 +23,7 @@ function getFileName(dir: string): string {
   return paths[paths.length - 1].split(".")[0];
 }
 
-abstract class Module {
+class Module {
   private client: BopClient;
   public name: string;
   public enabled: boolean;
@@ -36,7 +36,7 @@ abstract class Module {
     this.enabled = options.enabled ?? true;
   }
 
-  public init(): unknown {
+  public async init(): Promise<unknown> {
     return;
   }
 
@@ -67,7 +67,7 @@ abstract class Event extends Module {
     this.once = options.once ?? false;
   }
 
-  public main(...args: readonly unknown[]) : unknown {
+  public main(...args: readonly unknown[]) : Awaited<void> {
       throw new Error("Not implemented");
   }
 }

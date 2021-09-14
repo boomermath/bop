@@ -92,7 +92,7 @@ export class EventStore extends Store<Event> {
   async load(dir: string): Promise<Event> {
     const event = await super.load(dir);
     const eventFunction = event.main.bind(event);
-    this.client[event.once ? "once" : "on"](event.name, eventFunction);
+    this.client[event.once ? "once" : "on"](event.name, eventFunction)
     return event;
   }
 }
