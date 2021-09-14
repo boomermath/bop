@@ -1,4 +1,5 @@
-import {sep} from "path";
+import { Message } from "discord.js";
+import { sep } from "path";
 import BopClient from "./Client";
 
 interface baseOpts {
@@ -8,28 +9,37 @@ interface baseOpts {
 }
 
 interface eventOpts extends baseOpts {
-  once: boolean;
+  once?: boolean;
 }
 
 interface commandOpts extends baseOpts {
-  aliases: string[];
+  aliases?: string[];
   description: string;
   cooldown: number;
 }
 
-class Module {
+function getFileName(dir: string): string {
+  const paths = dir.split(sep);
+  return paths[paths.length - 1].split(".")[0];
+}
+
+abstract class Module {
   private client: BopClient;
   public name: string;
   public enabled: boolean;
   public directory: string;
 
   constructor(client: BopClient, directory: string, options: baseOpts = {}) {
-
     this.client = client;
     this.directory = directory;
-    this.name = options.name ?? 
+    this.name = options.name ?? getFileName(directory);
     this.enabled = options.enabled ?? true;
   }
+
+  public init(): unknown {
+    return;
+  }
+
 }
 
 class Command extends Module {
@@ -40,25 +50,25 @@ class Command extends Module {
   constructor(client: BopClient, directory: string, options: commandOpts) {
     super(client, directory, options);
     this.description = options.description;
-    this.aliases = options.aliases;
+    this.aliases = options.aliases ?? [];
     this.cooldown = options.cooldown;
   }
 
-  public main(name: string): void {
-    throw new Error("Not implemented");
+  public main(message: Message, args: string[]) {
+    throw new Error("Not Implemented");
   }
 }
 
-class Event extends Module {
+abstract class Event extends Module {
   public once: boolean;
 
   constructor(client: BopClient, directory: string, options: eventOpts) {
     super(client, directory, options);
-    this.once = options.once;
+    this.once = options.once ?? false;
   }
 
-  public main(name: string): void {
-    throw new Error("Not implemented");
+  public main(...args: readonly unknown[]) : unknown {
+      throw new Error("Not implemented");
   }
 }
 

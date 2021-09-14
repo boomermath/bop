@@ -16,8 +16,11 @@ export default class BopClient extends Client {
   }
 
   public async start(): Promise<void> {
-    this.commands.init();
-    this.events.init();
+    await this.commands.loadAll();
+    await this.events.loadAll();
+
+    await this.commands.init();
+    await this.events.init();
 
     super.login(process.env.TOKEN);
   }
