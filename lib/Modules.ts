@@ -18,25 +18,25 @@ interface commandOpts extends baseOpts {
 }
 
 function getFileName(dir: string): string {
-  const paths = dir.split(sep);
-  return paths[paths.length - 1].split(".")[0];
+    const paths = dir.split(sep);
+    return paths[paths.length - 1].split(".")[0];
 }
 
 class Module {
-  private client: BopClient;
+  protected client: BopClient;
   public name: string;
   public enabled: boolean;
   public directory: string;
 
   constructor(client: BopClient, directory: string, options: baseOpts = {}) {
-    this.client = client;
-    this.directory = directory;
-    this.name = options.name ?? getFileName(directory);
-    this.enabled = options.enabled ?? true;
+      this.client = client;
+      this.directory = directory;
+      this.name = options.name ?? getFileName(directory);
+      this.enabled = options.enabled ?? true;
   }
 
   public async init(): Promise<unknown> {
-    return;
+      return;
   }
 
 }
@@ -47,14 +47,14 @@ class Command extends Module {
   public cooldown: number;
 
   constructor(client: BopClient, directory: string, options: commandOpts) {
-    super(client, directory, options);
-    this.description = options.description;
-    this.aliases = options.aliases ?? [];
-    this.cooldown = options.cooldown;
+      super(client, directory, options);
+      this.description = options.description;
+      this.aliases = options.aliases ?? [];
+      this.cooldown = options.cooldown;
   }
 
   public main(message: Message, args: string[]) {
-    throw new Error("Not Implemented");
+      throw new Error("Not Implemented");
   }
 }
 
@@ -62,8 +62,8 @@ abstract class Event extends Module {
   public once: boolean;
 
   constructor(client: BopClient, directory: string, options: eventOpts) {
-    super(client, directory, options);
-    this.once = options.once ?? false;
+      super(client, directory, options);
+      this.once = options.once ?? false;
   }
 
   public main(...args: readonly unknown[]) : Awaited<void> {
