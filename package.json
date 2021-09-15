@@ -4,9 +4,8 @@
     "description": "music bot for a small discord server",
     "main": "index.js",
     "scripts": {
-        "test": "node .",
         "lint": "eslint . --fix",
-        "dev": "npm run build && npm run start",
+        "dev": "tsc && node dist/index.js",
         "build": "tsc",
         "start": "node dist/index.js"
     },
@@ -26,6 +25,7 @@
     },
     "homepage": "https://github.com/boomermath/bop-js#readme",
     "dependencies": {
+        "chalk": "^4.1.2",
         "discord.js": "^13.1.0",
         "dotenv": "^10.0.0"
     },

@@ -1,5 +1,5 @@
 import { readdirSync, statSync } from "fs";
-import { join } from "path";
+import { join, extname } from "path";
 import { Collection } from "discord.js";
 import BopClient from "./Client";
 import { Command, Event, Module } from "./Modules";
@@ -11,14 +11,15 @@ class Store<M extends Module> extends Collection<string, M> {
   constructor(client: BopClient, directory: string) {
     super();
     this.client = client;
-    this.directory = join(process.cwd(), directory);
+    this.directory = directory;
   }
 
   async loadAll(): Promise<M[]> {
     this.clear();
-    console.log(Store.getModules(this.directory))
     return Promise.all(
-      Store.getModules(this.directory).map((mod) => this.load(mod))
+      Store.getModules(join(__dirname, this.directory)).map((mod) =>
+        this.load(mod)
+      )
     );
   }
 
@@ -30,6 +31,7 @@ class Store<M extends Module> extends Collection<string, M> {
     const importedModule = await import(dir);
     const Module =
       "default" in importedModule ? importedModule.default : importedModule;
+
     const mod = new Module(this.client, dir);
 
     this.set(mod.name, mod);
@@ -46,10 +48,8 @@ class Store<M extends Module> extends Collection<string, M> {
 
   static getModules(dir: string): string[] {
     return readdirSync(dir)
-      .filter(
-        (file) => statSync(join(dir, file)).isFile() && file.endsWith(".js")
-      )
-      .map((file) => join(dir, file));
+      .map((file) => join(dir, file))
+      .filter((file) => statSync(file).isFile() && extname(file) === ".js");
   }
 }
 

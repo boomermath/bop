@@ -2,8 +2,8 @@ import { Client, Intents } from "discord.js";
 import { CommandStore, EventStore } from "./Stores";
 
 export default class BopClient extends Client {
-  public commands: CommandStore = new CommandStore(this, "./dist/commands");
-  public events: EventStore = new EventStore(this, "./dist/events");
+  public commands: CommandStore = new CommandStore(this, "../commands");
+  public events: EventStore = new EventStore(this, "../events");
 
   public constructor() {
     super({

@@ -5,7 +5,7 @@ import { Event } from "../lib/Modules";
 export default class MessageEvent extends Event {
   constructor(client: BopClient, directory: string) {
     super(client, directory, {
-      name: "message",
+      name: "messageCreate",
     });
   }
 
