@@ -3,7 +3,7 @@ import { Awaited, GuildTextChannelResolvable, TextChannel } from "discord.js";
 import BopClient from "../../lib/Client";
 import { Event } from "../../lib/Modules";
 
-export default class ReadyEvent extends Event {
+export default class BotDisconnectEvent extends Event {
   constructor(client: BopClient, directory: string) {
     super(client, directory, {
       name: "botDisconnect",

@@ -1,8 +1,8 @@
-import { Message } from "discord.js";
+import { GuildResolvable, Message } from "discord.js";
 import BopClient from "../lib/Client";
 import { Command, Inhibitor } from "../lib/Modules";
 
-export default class VoiceChannelInhibitor extends Inhibitor {
+export default class NotPlayingInhibitor extends Inhibitor {
   constructor(client: BopClient, directory: string) {
     super(client, directory, {
       name: "voiceChannel",
@@ -10,7 +10,10 @@ export default class VoiceChannelInhibitor extends Inhibitor {
   }
 
   check(message: Message, command: Command): boolean {
-    return ["queue"].includes(command.name) ? false : true;
+    const isPlaying = this.client.player.getQueue(
+      message.guild as GuildResolvable
+    );
+    return isPlaying || command.name === "play" ? false : true;
   }
 
   main(message: Message): boolean {

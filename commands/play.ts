@@ -3,7 +3,7 @@ import { GuildChannelResolvable, GuildResolvable, Message } from "discord.js";
 import BopClient from "../lib/Client";
 import { Command } from "../lib/Modules";
 
-export default class Play extends Command {
+export default class PlayCommand extends Command {
   public constructor(client: BopClient, directory: string) {
     super(client, directory, {
       name: "play",

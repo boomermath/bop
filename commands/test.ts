@@ -3,7 +3,7 @@ import BopClient from "../lib/Client";
 import { Command } from "../lib/Modules";
 import { Notification } from "../lib/util/Embeds";
 
-export default class Test extends Command {
+export default class TestCommand extends Command {
   public constructor(client: BopClient, directory: string) {
     super(client, directory, {
       name: "test",

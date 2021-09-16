@@ -78,7 +78,7 @@ class Inhibitor extends Module {
         throw new Error("Not implemented");
     }
 
-    public main(message: Message, command: Command): boolean {
+    public main(message: Message): boolean {
         throw new Error("Not implemented");
     }
 }
