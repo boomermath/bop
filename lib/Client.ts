@@ -1,29 +1,37 @@
+import { Player } from "discord-player";
 import { Client, Intents } from "discord.js";
-import BopConsole from "./Console";
-import { CommandStore, EventStore } from "./Stores";
+import BopConsole from "./util/Console";
+import { CommandStore, EventStore, InhibitorStore } from "./Stores";
 
 export default class BopClient extends Client {
+  public prefix = "bop!";
+  public player: Player = new Player(this);
   public commands: CommandStore = new CommandStore(this, "../commands");
   public events: EventStore = new EventStore(this, "../events");
+  public inhibitors: InhibitorStore = new InhibitorStore(this, "../inhibitors");
   public console: BopConsole = new BopConsole();
 
   public constructor() {
-      super({
-          intents: [
-              Intents.FLAGS.GUILD_MESSAGES,
-              Intents.FLAGS.GUILD_VOICE_STATES,
-              Intents.FLAGS.GUILDS,
-          ],
-      });
+    super({
+      intents: [
+        Intents.FLAGS.GUILD_MESSAGES,
+        Intents.FLAGS.GUILD_VOICE_STATES,
+        Intents.FLAGS.GUILDS,
+      ],
+    });
   }
 
   public async start(): Promise<void> {
-      await this.commands.loadAll();
-      await this.events.loadAll();
+    this.events.setEmitters({ client: this, player: this.player });
 
-      await this.commands.init();
-      await this.events.init();
+    await this.commands.loadAll();
+    await this.inhibitors.loadAll();
+    await this.events.loadAll();
 
-      super.login(process.env.TOKEN);
+    await this.commands.init();
+    await this.inhibitors.init();
+    await this.events.init();
+
+    super.login(process.env.TOKEN);
   }
 }

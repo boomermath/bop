@@ -5,9 +5,9 @@
     "main": "index.js",
     "scripts": {
         "lint": "eslint . --fix",
-        "dev": "tsc && node dist/index.js",
-        "build": "tsc",
-        "start": "node dist/index.js"
+        "build": "tsc --project tsconfig.json",
+        "start": "node --enable-source-maps dist/index.js",
+        "test": "tsc --project tsconfig.json && node --enable-source-maps dist/index.js"
     },
     "repository": {
         "type": "git",
@@ -25,14 +25,19 @@
     },
     "homepage": "https://github.com/boomermath/bop-js#readme",
     "dependencies": {
+        "@discordjs/opus": "^0.6.0",
+        "@discordjs/voice": "^0.6.0",
         "chalk": "^4.1.2",
+        "discord-player": "^5.1.0",
         "discord.js": "^13.1.0",
-        "dotenv": "^10.0.0"
+        "dotenv": "^10.0.0",
+        "ffmpeg-static": "^4.4.0"
     },
     "devDependencies": {
         "@typescript-eslint/eslint-plugin": "^4.31.1",
         "@typescript-eslint/parser": "^4.31.1",
         "eslint": "^7.32.0",
+        "tslint": "^6.1.3",
         "typescript": "^4.4.3"
     }
 }

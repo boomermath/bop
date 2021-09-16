@@ -9,6 +9,7 @@ interface baseOpts {
 
 interface eventOpts extends baseOpts {
   once?: boolean;
+  emitter: string
 }
 
 interface commandOpts extends baseOpts {
@@ -38,7 +39,6 @@ class Module {
   public async init(): Promise<unknown> {
       return;
   }
-
 }
 
 class Command extends Module {
@@ -53,22 +53,34 @@ class Command extends Module {
       this.cooldown = options.cooldown;
   }
 
-  public main(message: Message, args: string[]) {
+  public main(message: Message, args: string[]): void {
       throw new Error("Not Implemented");
   }
 }
 
-abstract class Event extends Module {
+class Event extends Module {
   public once: boolean;
+  public emitter: string;
 
   constructor(client: BopClient, directory: string, options: eventOpts) {
       super(client, directory, options);
+      this.emitter = options.emitter;
       this.once = options.once ?? false;
   }
 
-  public main(...args: readonly unknown[]) : Awaited<void> {
+  public main(...args: readonly unknown[]): Awaited<void> {
       throw new Error("Not implemented");
   }
 }
 
-export { Module, Command, Event };
+class Inhibitor extends Module {
+    public check(message: Message, command: Command): boolean {
+        throw new Error("Not implemented");
+    }
+
+    public main(message: Message, command: Command): boolean {
+        throw new Error("Not implemented");
+    }
+}
+
+export { Module, Command, Event, Inhibitor };
