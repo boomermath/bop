@@ -6,9 +6,9 @@ import { CommandStore, EventStore, InhibitorStore } from "./Stores";
 export default class BopClient extends Client {
   public prefix = "bop!";
   public player: Player = new Player(this);
-  public commands: CommandStore = new CommandStore(this, "../commands");
-  public events: EventStore = new EventStore(this, "../events");
-  public inhibitors: InhibitorStore = new InhibitorStore(this, "../inhibitors");
+  public commands: CommandStore = new CommandStore(this, "../src/commands");
+  public events: EventStore = new EventStore(this, "../src/events");
+  public inhibitors: InhibitorStore = new InhibitorStore(this, "../src/inhibitors");
   public console: BopConsole = new BopConsole();
 
   public constructor() {

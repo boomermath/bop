@@ -1,6 +1,6 @@
 import { GuildResolvable, Message } from "discord.js";
-import BopClient from "../lib/Client";
-import { Command, Inhibitor } from "../lib/Modules";
+import BopClient from "../../lib/Client";
+import { Command, Inhibitor } from "../../lib/Modules";
 
 export default class NotPlayingInhibitor extends Inhibitor {
   constructor(client: BopClient, directory: string) {
