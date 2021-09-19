@@ -123,7 +123,7 @@ export class InhibitorStore extends Store<Inhibitor> {
   run(message: Message, command: Command): boolean {
     for (const inhibitor of this.values()) {
       if (inhibitor.check(message, command)) {
-        if (inhibitor.main(message, command)) return true;
+        if (inhibitor.main(message)) return true;
       }
     }
 
