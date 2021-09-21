@@ -1,8 +1,8 @@
 import { QueryResolver, QueryType } from "discord-player";
 import { GuildChannelResolvable, GuildResolvable, Message } from "discord.js";
 import { validateURL } from "ytdl-core";
-import BopClient from "../../../../lib/Client";
-import { Command } from "../../../../lib/Modules";
+import BopClient from "../../lib/Client";
+import { Command } from "../../lib/Modules";
 
 export default class PlayCommand extends Command {
   public constructor(client: BopClient, directory: string) {

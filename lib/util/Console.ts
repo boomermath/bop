@@ -39,8 +39,9 @@ export default class BopConsole extends Console {
     if (message instanceof Error) {
       return message.stack ?? message.name;
     } else if (Array.isArray(message)) {
-      if (message.every((entry) => typeof entry === "string"))
-        return message.join("\n");
+      return message.every((entry) => typeof entry === "string")
+        ? message.join("\n")
+        : message.map((e) => inspect(e)).join("\n");
     } else if (typeof message === "object") {
       return inspect(message);
     }

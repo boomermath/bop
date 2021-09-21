@@ -1,12 +1,12 @@
 import { Playlist, Track } from "discord-player";
 import { MessageEmbed } from "discord.js";
-const COLOR = "BLUE";
+export const EMBED_COLOR = "BLUE";
 
 export class Notification extends MessageEmbed {
   constructor(description: string) {
     super({
       description: description,
-      color: COLOR,
+      color: EMBED_COLOR,
     });
   }
 }
@@ -27,7 +27,7 @@ export class MusicEmbed extends MessageEmbed {
 
     super({
       description: description,
-      color: COLOR,
+      color: EMBED_COLOR,
       thumbnail: {
         url: music.thumbnail,
       },
