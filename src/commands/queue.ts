@@ -14,10 +14,10 @@ export default class QueueCommand extends Command {
     });
   }
 
-  private entry(track: Track, index: string | number): EmbedField {
+  private entry(track: Track, index: number): EmbedField {
     return {
       name: "\u200b",
-      value: `**${typeof index === "number" ? index + 1 : index}. [${
+      value: `**${index === -1 ? "Now Playing:" : `${index + 1}.`} [${
         track.title
       }](${track.url})** by ***${track.author}*** | \`${
         track.duration
@@ -35,7 +35,7 @@ export default class QueueCommand extends Command {
         {
           title: `Queue for ${message.guild?.name}`,
           color: EMBED_COLOR,
-          description: this.entry(queue.current, "Now Playing").value,
+          description: this.entry(queue.current, -1).value,
           fields: queueEntries,
         },
       ],
