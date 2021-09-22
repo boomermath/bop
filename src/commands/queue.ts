@@ -17,11 +17,9 @@ export default class QueueCommand extends Command {
   private entry(track: Track, index: number): EmbedField {
     return {
       name: "\u200b",
-      value: `**${index === -1 ? "Now Playing:" : `${index + 1}.`} [${
-        track.title
-      }](${track.url})** by ***${track.author}*** | \`${
-        track.duration
-      }\` | **${track.views.toLocaleString()} views**`,
+      value: `**${index < 0 ? "Now Playing:" : `${index + 1}.`} [${track.title
+        }](${track.url})** by ***${track.author}*** | \`${track.duration
+        }\` | **${track.views.toLocaleString()} views**`,
       inline: false,
     };
   }
@@ -31,14 +29,12 @@ export default class QueueCommand extends Command {
     const queueEntries = queue.tracks.map(this.entry);
 
     message.channel.send({
-      embeds: [
-        {
-          title: `Queue for ${message.guild?.name}`,
-          color: EMBED_COLOR,
-          description: this.entry(queue.current, -1).value,
-          fields: queueEntries,
-        },
-      ],
+      embeds: [{
+        title: `Queue for ${message.guild?.name}`,
+        description: this.entry(queue.current, -1).value,
+        color: EMBED_COLOR,
+        fields: queueEntries
+      }]
     });
   }
 }

@@ -2,16 +2,7 @@ import { Playlist, Track } from "discord-player";
 import { MessageEmbed } from "discord.js";
 export const EMBED_COLOR = "BLUE";
 
-export class Notification extends MessageEmbed {
-  constructor(description: string) {
-    super({
-      description: description,
-      color: EMBED_COLOR,
-    });
-  }
-}
-
-export class MusicEmbed extends MessageEmbed {
+export default class MusicEmbed extends MessageEmbed {
   constructor(music: Playlist | Track, nowplaying: boolean = false) {
     const author =
       music instanceof Playlist

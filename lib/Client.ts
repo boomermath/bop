@@ -4,7 +4,7 @@ import BopConsole from "./util/Console";
 import { CommandStore, EventStore, InhibitorStore } from "./Stores";
 
 export default class BopClient extends Client {
-  public prefix = "bop!";
+  public prefix: string = "bop!";
   public player: Player = new Player(this);
   public commands: CommandStore = new CommandStore(this, "../src/commands");
   public events: EventStore = new EventStore(this, "../src/events");
