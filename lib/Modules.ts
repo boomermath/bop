@@ -84,3 +84,4 @@ class Inhibitor extends Module {
 }
 
 export { Module, Command, Event, Inhibitor };
+

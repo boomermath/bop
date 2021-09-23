@@ -3,14 +3,14 @@ import BopClient from "../../../lib/Client";
 import { Event } from "../../../lib/Modules";
 
 export default class BotDisconnectEvent extends Event {
-  constructor(client: BopClient, directory: string) {
-    super(client, directory, {
-      name: "botDisconnect",
-      emitter: "player",
-    });
-  }
+    constructor(client: BopClient, directory: string) {
+        super(client, directory, {
+            name: "botDisconnect",
+            emitter: "player",
+        });
+    }
 
-  public main(queue: Queue): void {
-    queue.destroy();
-  }
+    public main(queue: Queue): void {
+        queue.destroy();
+    }
 }
