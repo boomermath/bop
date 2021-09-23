@@ -3,7 +3,6 @@ import { Message, MessageEmbedOptions } from "discord.js";
 import BopClient from "../../lib/Client";
 import { Command } from "../../lib/Modules";
 import { EMBED_COLOR } from "../../lib/util/Embeds";
-import Util from "../../lib/util/Util";
 
 const filterAliases: Record<string, string> = {
   bassboost: "bassboost",
@@ -12,10 +11,10 @@ const filterAliases: Record<string, string> = {
   vw: "vaporwave",
   nm: "normalizer2",
   "8d": "8D",
-  "8D": "8D"
+  "8D": "8D",
 };
 
-export default class PlayCommand extends Command {
+export default class FilterCommand extends Command {
   public constructor(client: BopClient, directory: string) {
     super(client, directory, {
       name: "filter",
@@ -28,32 +27,46 @@ export default class PlayCommand extends Command {
   private formatFilter(arg: string): string {
     return arg
       .split("_")
-      .map((e) => Util.toTitleCase(e))
+      .map((e) => `${e[0].toUpperCase()}${e.slice(1)}`)
       .join(" ");
   }
 
   public async main(message: Message, args: string[]): Promise<void> {
     const queue = this.client.player.getQueue(message.guild!);
     const queueFiltersEnabled = queue.getFiltersEnabled();
-    const embed = {
-      title: `Filters for ${message.guild?.name}`,
-      color: EMBED_COLOR,
-    } as MessageEmbedOptions;
 
-    if (!args.length) {
+    if (args.length > 3) {
+      message.channel.send({
+        embeds: [
+          {
+            description: "**:x: No more than three at a time!**",
+            color: EMBED_COLOR,
+          },
+        ],
+      });
+    } else if (!args.length) {
       const formattedQueueFilters = AudioFilters.names.map(
         (f) =>
-          `**${this.formatFilter(f)}**: ${queueFiltersEnabled.includes(f) ? "Enabled" : "Disabled"
+          `**${this.formatFilter(f)}**: ${
+            queueFiltersEnabled.includes(f) ? "Enabled" : "Disabled"
           }`
       );
 
-      embed.description = formattedQueueFilters.join("\n");
-      embed.fields = [
-        {
-          name: "Toggle Filters",
-          value: `To toggle filters, do ${this.client.prefix}filter <...filters>`,
-        },
-      ];
+      message.channel.send({
+        embeds: [
+          {
+            title: `Filters for ${message.guild?.name}`,
+            description: formattedQueueFilters.join("\n"),
+            color: EMBED_COLOR,
+            fields: [
+              {
+                name: "Toggle Filters",
+                value: `To toggle filters, do ${this.client.prefix}filter <...filters>`,
+              },
+            ],
+          },
+        ],
+      });
     } else {
       const setFilterObj = {} as Record<string, boolean>;
       const filters = args.map(
@@ -75,16 +88,6 @@ export default class PlayCommand extends Command {
         });
       }
 
-      queue.setPaused(true);
-      message.channel.send({
-        embeds: [
-          {
-            description: `:musical_note: **Applying filters...**`,
-            color: EMBED_COLOR,
-          },
-        ],
-      });
-
       for (const filter of AudioFilters.names) {
         const isEnabled = queueFiltersEnabled.includes(filter);
         setFilterObj[filter] = filters.includes(filter)
@@ -92,10 +95,18 @@ export default class PlayCommand extends Command {
           : isEnabled;
       }
 
-      embed.description = `Toggled ${filters.join(", ")} filters!`;
-
+      queue.setPaused(true);
       queue.setFilters(setFilterObj).then(() => {
-        message.channel.send({ embeds: [embed] });
+        message.channel.send({
+          embeds: [
+            {
+              description: `**:white_check_mark: Toggled ${filters.join(
+                ", "
+              )} filter${filters.length > 1 ? "s" : ""}!**`,
+              color: EMBED_COLOR,
+            },
+          ],
+        });
       });
     }
   }

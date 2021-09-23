@@ -1,4 +1,4 @@
-import { QueryResolver, QueryType } from "discord-player";
+import { AudioFilters, QueryResolver, QueryType } from "discord-player";
 import { GuildChannelResolvable, GuildResolvable, Message } from "discord.js";
 import { validateURL } from "ytdl-core";
 import BopClient from "../../lib/Client";
@@ -22,8 +22,8 @@ export default class PlayCommand extends Command {
     const queue = queueExists
       ? queueExists
       : player.createQueue(message.guild!, {
-        metadata: message.channel,
-      });
+          metadata: message.channel,
+        });
 
     let searchEngine = QueryResolver.resolve(input);
 
@@ -54,10 +54,9 @@ export default class PlayCommand extends Command {
       : queue.addTrack(song.tracks[0]);
 
     if (!queueExists) {
-      await queue.setFilters({
-        normalizer2: true,
+      queue.play().then(() => {
+        queue.setFilters({ normalizer2: true });
       });
-      await queue.play();
     }
   }
 }
