@@ -22,8 +22,8 @@ export default class PlayCommand extends Command {
     const queue = queueExists
       ? queueExists
       : player.createQueue(message.guild!, {
-          metadata: message.channel,
-        });
+        metadata: message.channel,
+      });
 
     let searchEngine = QueryResolver.resolve(input);
 
@@ -53,6 +53,11 @@ export default class PlayCommand extends Command {
       ? queue.addTracks(song.tracks)
       : queue.addTrack(song.tracks[0]);
 
-    if (!queueExists) queue.play();
+    if (!queueExists) {
+      await queue.setFilters({
+        normalizer2: true,
+      });
+      await queue.play();
+    }
   }
 }

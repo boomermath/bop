@@ -11,6 +11,8 @@ const filterAliases: Record<string, string> = {
   nc: "nightcore",
   vw: "vaporwave",
   nm: "normalizer2",
+  "8d": "8D",
+  "8D": "8D"
 };
 
 export default class PlayCommand extends Command {
@@ -41,8 +43,7 @@ export default class PlayCommand extends Command {
     if (!args.length) {
       const formattedQueueFilters = AudioFilters.names.map(
         (f) =>
-          `**${this.formatFilter(f)}**: ${
-            queueFiltersEnabled.includes(f) ? "Enabled" : "Disabled"
+          `**${this.formatFilter(f)}**: ${queueFiltersEnabled.includes(f) ? "Enabled" : "Disabled"
           }`
       );
 
@@ -55,11 +56,10 @@ export default class PlayCommand extends Command {
       ];
     } else {
       const setFilterObj = {} as Record<string, boolean>;
-      const lowerCasedArgs = args.map((a) => a.toLowerCase());
-      const filters = lowerCasedArgs.map(
+      const filters = args.map(
         (arg) =>
-          filterAliases[arg] ??
-          AudioFilters.names.find((a) => a.includes(arg)) ??
+          filterAliases[arg.toLowerCase()] ??
+          AudioFilters.names.find((a) => a.includes(arg.toLowerCase())) ??
           `Invalid filter: ${arg}`
       );
       const invalidFilter = filters.find((f) => f.startsWith("Invalid"));
@@ -92,11 +92,11 @@ export default class PlayCommand extends Command {
           : isEnabled;
       }
 
-      await queue.setFilters(setFilterObj);
-
       embed.description = `Toggled ${filters.join(", ")} filters!`;
-    }
 
-    message.channel.send({ embeds: [embed] });
+      queue.setFilters(setFilterObj).then(() => {
+        message.channel.send({ embeds: [embed] });
+      });
+    }
   }
 }
