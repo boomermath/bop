@@ -6,7 +6,6 @@ export default class VoiceChannelInhibitor extends Inhibitor {
   constructor(client: BopClient, directory: string) {
     super(client, directory, {
       name: "voiceChannel",
-      enabled: false
     });
   }
 
