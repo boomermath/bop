@@ -3,6 +3,7 @@ import { Message, MessageEmbedOptions } from "discord.js";
 import BopClient from "../../lib/Client";
 import { Command } from "../../lib/Modules";
 import { EMBED_COLOR } from "../../lib/util/Embeds";
+import Util from "../../lib/util/Util";
 
 const filterAliases: Record<string, string> = {
   bassboost: "bassboost",
@@ -27,7 +28,7 @@ export default class FilterCommand extends Command {
   private formatFilter(arg: string): string {
     return arg
       .split("_")
-      .map((e) => `${e[0].toUpperCase()}${e.slice(1)}`)
+      .map((e) => Util.toTitleCase(e))
       .join(" ");
   }
 

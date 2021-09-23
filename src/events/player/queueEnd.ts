@@ -15,7 +15,7 @@ export default class TrackAddEvent extends Event {
   public main(queue: Queue): void {
     const channel = queue.metadata as TextChannel;
 
-    channel.send({
+    return void channel.send({
       embeds: [{
         description: "Queue has ended!",
         color: EMBED_COLOR
