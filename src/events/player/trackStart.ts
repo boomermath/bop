@@ -6,20 +6,20 @@ import { MusicEmbed } from "../../../lib/util/Embeds";
 import Util from "../../../lib/util/Util";
 
 export default class TrackAddEvent extends Event {
-  constructor(client: BopClient, directory: string) {
-    super(client, directory, {
-      name: "trackStart",
-      emitter: "player",
-    });
-  }
+    constructor(client: BopClient, directory: string) {
+        super(client, directory, {
+            name: "trackStart",
+            emitter: "player",
+        });
+    }
 
-  public main(queue: Queue, track: Track): void {
-    const channel = queue.metadata as TextChannel;
-    const nowPlayingEmbed = new MusicEmbed(track, true);
+    public main(queue: Queue, track: Track): void {
+        const channel = queue.metadata as TextChannel;
+        const nowPlayingEmbed = new MusicEmbed(track, true);
 
-    return void channel.send({
-      embeds: [nowPlayingEmbed],
-      components: [Util.buildDefaultActionRow()],
-    });
-  }
+        return void channel.send({
+            embeds: [nowPlayingEmbed],
+            components: [Util.buildDefaultActionRow()],
+        });
+    }
 }

@@ -1,6 +1,7 @@
 import { Message } from "discord.js";
 import BopClient from "../../lib/Client";
 import { Command, Inhibitor } from "../../lib/Modules";
+import { Notification } from "../../lib/util/Embeds";
 
 export default class VoiceChannelInhibitor extends Inhibitor {
     constructor(client: BopClient, directory: string) {
@@ -10,16 +11,10 @@ export default class VoiceChannelInhibitor extends Inhibitor {
     }
 
     check(message: Message, command: Command): boolean {
-        return ["queue"].includes(command.name) ? false : true;
+        return ["queue", "nowplaying"].includes(command.name) || message?.member?.voice.channel ? false : true;
     }
 
-    main(message: Message): boolean {
-        if (!message.member?.voice.channel) {
-            message.channel.send(
-                "You must be in a voice channel to use this command."
-            );
-            return true;
-        }
-        return false;
+    main(message: Message): void {
+        message.channel.send({ embeds: [new Notification(":speaker: Join my voice channel!")] });
     }
 }
