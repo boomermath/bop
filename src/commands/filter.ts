@@ -92,9 +92,9 @@ export default class extends Command {
                 message.channel.send({
                     embeds: [
                         new Notification(
-                            `**:white_check_mark: Toggled ${filters.join(", ")} filter${
+                            `Toggled ${filters.join(", ")} filter${
                                 filters.length > 1 ? "s" : ""
-                            }!**`
+                            }!`
                         ),
                     ],
                 });

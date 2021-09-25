@@ -18,7 +18,7 @@ export default class TrackAddEvent extends Event {
         queue.destroy();
 
         return void channel.send({
-            embeds: [new Notification(":wave: Disconnected!")],
+            embeds: [new Notification("Disconnected!")],
         });
     }
 }

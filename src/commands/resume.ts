@@ -33,7 +33,7 @@ export default class extends Command {
         );
 
         message.channel.send({
-            embeds: [new Notification(":arrow_forward: Music Resumed!")],
+            embeds: [new Notification("Music Resumed!")],
             components: [pauseButton],
         });
     }

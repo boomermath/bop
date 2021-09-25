@@ -33,7 +33,7 @@ export default class  extends Command {
         );
 
         message.channel.send({
-            embeds: [new Notification(":pause_button: Music Paused!")],
+            embeds: [new Notification("Music Paused!")],
             components: [resumeButton],
         });
     }
