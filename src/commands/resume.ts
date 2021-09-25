@@ -1,14 +1,13 @@
-import { AudioFilters } from "discord-player";
 import { Message, MessageActionRow, MessageButton } from "discord.js";
 import BopClient from "../../lib/Client";
 import { Command } from "../../lib/Modules";
 import { Notification } from "../../lib/util/Embeds";
 
-export default class ResumeCommand extends Command {
+export default class extends Command {
     public constructor(client: BopClient, directory: string) {
         super(client, directory, {
             name: "resume",
-            description: "Resume music.",
+            description: "Resume music!",
             aliases: ["rs"],
             cooldown: 1,
         });

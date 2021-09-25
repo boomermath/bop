@@ -3,12 +3,14 @@ import { GuildChannelResolvable, Message } from "discord.js";
 import { validateURL } from "ytdl-core";
 import BopClient from "../../lib/Client";
 import { Command } from "../../lib/Modules";
+import { Notification } from "../../lib/util/Embeds";
 
-export default class PlayCommand extends Command {
+export default class extends Command {
     public constructor(client: BopClient, directory: string) {
         super(client, directory, {
             name: "play",
-            description: "Play music.",
+            description: "Play music!",
+            usage: ["query"],
             aliases: ["p"],
             cooldown: 1,
         });
@@ -34,10 +36,17 @@ export default class PlayCommand extends Command {
               : QueryType.YOUTUBE_VIDEO
           : searchEngine;
 
-        const song = await player.search(input, {
-            requestedBy: message.author,
-            searchEngine: searchEngine,
-        });
+        let song;
+        try {
+            song = await player.search(input, {
+                requestedBy: message.author,
+                searchEngine: searchEngine,
+            });
+        } catch {
+            return void message.channel.send({
+                embeds: [new Notification("Couldn't find that song!")],
+            });
+        }
 
         if (!queueExists) {
             try {
@@ -45,7 +54,8 @@ export default class PlayCommand extends Command {
           message.member?.voice.channel as GuildChannelResolvable
                 );
             } catch {
-                message.channel.send("Couldn't connect!");
+                queue.destroy();
+                return void message.channel.send("Couldn't connect!");
             }
         }
 

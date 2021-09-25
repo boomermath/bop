@@ -12,7 +12,7 @@ export default class NotPlayingInhibitor extends Inhibitor {
 
     check(message: Message, command: Command): boolean {
         const isPlaying = this.client.player.getQueue(message.guild!);
-        return isPlaying || command.name === "play" ? false : true;
+        return isPlaying || ["play", "help"].includes(command.name) ? false : true;
     }
 
     main(message: Message): void {

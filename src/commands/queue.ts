@@ -4,11 +4,11 @@ import BopClient from "../../lib/Client";
 import { Command } from "../../lib/Modules";
 import { EMBED_COLOR } from "../../lib/util/Embeds";
 
-export default class QueueCommand extends Command {
+export default class  extends Command {
     public constructor(client: BopClient, directory: string) {
         super(client, directory, {
             name: "queue",
-            description: "Play music.",
+            description: "See what music you have queued!",
             aliases: ["q"],
             cooldown: 1,
         });

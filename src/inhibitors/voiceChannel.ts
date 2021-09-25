@@ -11,10 +11,15 @@ export default class VoiceChannelInhibitor extends Inhibitor {
     }
 
     check(message: Message, command: Command): boolean {
-        return ["queue", "nowplaying"].includes(command.name) || message?.member?.voice.channel ? false : true;
+        return ["queue", "nowplaying", "help"].includes(command.name) ||
+      message?.member?.voice.channel
+            ? false
+            : true;
     }
 
     main(message: Message): void {
-        message.channel.send({ embeds: [new Notification(":speaker: Join my voice channel!")] });
+        message.channel.send({
+            embeds: [new Notification(":speaker: Join my voice channel!")],
+        });
     }
 }

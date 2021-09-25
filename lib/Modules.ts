@@ -15,6 +15,7 @@ interface eventOpts extends baseOpts {
 interface commandOpts extends baseOpts {
   aliases?: string[];
   description: string;
+  usage?: string[];
   cooldown: number;
 }
 
@@ -43,12 +44,14 @@ class Module {
 
 class Command extends Module {
   public description: string;
+  public usage: string[];
   public aliases: string[];
   public cooldown: number;
 
   constructor(client: BopClient, directory: string, options: commandOpts) {
       super(client, directory, options);
       this.description = options.description;
+      this.usage = options.usage ?? [];
       this.aliases = options.aliases ?? [];
       this.cooldown = options.cooldown;
   }

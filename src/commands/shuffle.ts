@@ -3,11 +3,11 @@ import BopClient from "../../lib/Client";
 import { Command } from "../../lib/Modules";
 import { Notification } from "../../lib/util/Embeds";
 
-export default class ResumeCommand extends Command {
+export default class  extends Command {
     public constructor(client: BopClient, directory: string) {
         super(client, directory, {
             name: "shuffle",
-            description: "Shuffle tracks.",
+            description: "Shuffle songs in the queue!",
             aliases: ["shf", "sf", "mix"],
             cooldown: 1,
         });

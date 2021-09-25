@@ -6,27 +6,28 @@ import { Notification } from "../../lib/util/Embeds";
 export default class extends Command {
     public constructor(client: BopClient, directory: string) {
         super(client, directory, {
-            name: "skip",
-            description: "Skip a song or two!",
+            name: "remove",
+            description: "Remove a song!",
             usage: ["songIndex"],
-            aliases: ["j", "s", "jump"],
+            aliases: ["rm", "delete", "del"],
             cooldown: 1,
         });
     }
 
     public async main(message: Message, args: string[]): Promise<void> {
         const queue = this.client.player.getQueue(message.guild!);
+        const index = parseInt(args[0]);
 
-        if (!args.length) return void queue.skip();
+        if (!index || index < 0 || index > queue.tracks.length) {
+            message.channel.send({
+                embeds: [new Notification("That's not a valid song to remove!")],
+            });
+        } else {
+            const song = queue.remove(index - 1);
 
-        const index = parseInt(args[0]) - 1;
-
-        if (index < 0 || index > queue.tracks.length) {
-            return void message.channel.send({
-                embeds: [new Notification("Invalid number to jump to!")],
+            message.channel.send({
+                embeds: [new Notification(`Removed *[${song.title}](${song.url})*`)],
             });
         }
-
-        queue.jump(index);
     }
 }

@@ -1,13 +1,12 @@
-import { Message, MessageActionRow, MessageButton } from "discord.js";
+import { Message } from "discord.js";
 import BopClient from "../../lib/Client";
 import { Command } from "../../lib/Modules";
-import { Notification } from "../../lib/util/Embeds";
 
-export default class LeaveCommand extends Command {
+export default class extends Command {
     public constructor(client: BopClient, directory: string) {
         super(client, directory, {
             name: "disconnect",
-            description: "Resume music.",
+            description: "Leave the voice channel.",
             aliases: ["dc", "leave", "die"],
             cooldown: 1,
         });

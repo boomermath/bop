@@ -10,7 +10,7 @@
         "test": "tsc --project tsconfig.json && node --enable-source-maps dist/index.js"
     },
     "engines": {
-        "node": ">=16.0.0",
+        "node": ">=16.6.0",
         "npm": ">=7.0.0"
     },
     "repository": {

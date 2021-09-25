@@ -2,7 +2,7 @@ import { AudioFilters } from "discord-player";
 import { Message } from "discord.js";
 import BopClient from "../../lib/Client";
 import { Command } from "../../lib/Modules";
-import { Notification, EMBED_COLOR } from "../../lib/util/Embeds";
+import { EMBED_COLOR, Notification } from "../../lib/util/Embeds";
 import Util from "../../lib/util/Util";
 
 const filterAliases: Record<string, string> = {
@@ -15,11 +15,12 @@ const filterAliases: Record<string, string> = {
     "8D": "8D",
 };
 
-export default class FilterCommand extends Command {
+export default class extends Command {
     public constructor(client: BopClient, directory: string) {
         super(client, directory, {
             name: "filter",
-            description: "Add filters.",
+            description: "Add filters to your music!",
+            usage: ["filter"],
             aliases: ["f"],
             cooldown: 1,
         });
