@@ -1,3 +1,4 @@
+import { AudioFilters, Track } from "discord-player";
 import { QueryResolver, QueryType } from "discord-player";
 import { GuildChannelResolvable, Message } from "discord.js";
 import { validateURL } from "ytdl-core";
@@ -26,12 +27,20 @@ export default class extends Command {
       });
     }
 
+    const filters: Record<string, boolean> = {};
+
+    AudioFilters.names.map((f) => (filters[f] = false));
+
     const queueExists = player.getQueue(message.guild!);
     const queue = queueExists
       ? queueExists
       : player.createQueue(message.guild!, {
-          metadata: message.channel,
+          metadata: {
+            channel: message.channel,
+            filters: filters,
+          },
           autoSelfDeaf: true,
+          initialVolume: 75,
           leaveOnEmptyCooldown: 3000,
         });
 
@@ -44,13 +53,12 @@ export default class extends Command {
           : QueryType.YOUTUBE_VIDEO
         : searchEngine;
 
-    let song;
-    try {
-      song = await player.search(input, {
-        requestedBy: message.author,
-        searchEngine: searchEngine,
-      });
-    } catch {
+    const song = await player.search(input, {
+      requestedBy: message.author,
+      searchEngine: searchEngine,
+    });
+
+    if (!(song.tracks[0] instanceof Track)) {
       return void message.channel.send({
         embeds: [new Notification("Couldn't find that song!")],
       });

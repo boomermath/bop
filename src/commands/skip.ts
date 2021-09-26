@@ -27,6 +27,9 @@ export default class extends Command {
             });
         }
 
+        this.client.console.log(index);
+        this.client.console.log(queue.tracks)
+
         queue.jump(index);
     }
 }
