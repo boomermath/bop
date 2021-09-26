@@ -31,6 +31,8 @@ export default class extends Command {
       ? queueExists
       : player.createQueue(message.guild!, {
           metadata: message.channel,
+          autoSelfDeaf: true,
+          leaveOnEmptyCooldown: 3000,
         });
 
     let searchEngine = QueryResolver.resolve(input);
@@ -60,7 +62,7 @@ export default class extends Command {
           message.member?.voice.channel as GuildChannelResolvable
         );
       } catch {
-        queue.destroy();
+        this.client.player.deleteQueue(queue.guild);
         return void message.channel.send("Couldn't connect!");
       }
     }

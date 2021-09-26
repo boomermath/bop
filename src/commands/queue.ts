@@ -21,7 +21,7 @@ export default class  extends Command {
                 track.title
             }](${track.url})** by ***${track.author}*** | \`${
                 track.duration
-            }\` | **${track.views.toLocaleString()} views**`,
+            }\` ${track.views > 0 ? `| **${track.views.toLocaleString()} views**` : ""}`,
             inline: false,
         };
     }
