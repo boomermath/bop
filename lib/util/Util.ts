@@ -1,3 +1,4 @@
+import { AudioFilters } from "discord-player";
 import { MessageActionRow, MessageButton, TextChannel } from "discord.js";
 
 export interface QueueMetadata {
@@ -8,6 +9,12 @@ export interface QueueMetadata {
 export default class Util {
   public static toTitleCase(e: string): string {
     return `${e.charAt(0).toUpperCase()}${e.slice(1)}`;
+  }
+
+  public static get defaultFilters(): Record<string, boolean> {
+    const filters: Record<string, boolean> = {};
+    AudioFilters.names.map((f) => (filters[f] = false));
+    return filters;
   }
 
   public static buildDefaultActionRow(): MessageActionRow {

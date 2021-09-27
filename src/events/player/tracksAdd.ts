@@ -14,10 +14,9 @@ export default class TrackAddEvent extends Event {
     }
 
     public main(queue: Queue<QueueMetadata>, track: Array<Track>): void {
-        const channel = queue.metadata?.channel as TextChannel;
         const playlistEmbed = new MusicEmbed(track[0].playlist!);
 
-        return void channel.send({
+        return void queue.metadata?.channel.send({
             embeds: [playlistEmbed],
             components: [Util.buildDefaultActionRow()],
         });

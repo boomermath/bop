@@ -1,10 +1,11 @@
-import { AudioFilters, Track } from "discord-player";
+import { AudioFilters, Queue, Track } from "discord-player";
 import { QueryResolver, QueryType } from "discord-player";
 import { GuildChannelResolvable, Message } from "discord.js";
 import { validateURL } from "ytdl-core";
 import BopClient from "../../lib/Client";
 import { Command } from "../../lib/Modules";
 import { Notification } from "../../lib/util/Embeds";
+import Util, { QueueMetadata } from "../../lib/util/Util";
 
 export default class extends Command {
   public constructor(client: BopClient, directory: string) {
@@ -19,30 +20,29 @@ export default class extends Command {
 
   public async main(message: Message, args: string[]): Promise<void> {
     const player = this.client.player;
-    const input = args.join(" ");
 
-    if (!input.length) {
+    if (!args.length) {
       return void message.channel.send({
         embeds: [new Notification("Give me something to play!")],
       });
     }
 
-    const filters: Record<string, boolean> = {};
-
-    AudioFilters.names.map((f) => (filters[f] = false));
-
+    const input = args.join(" ");
     const queueExists = player.getQueue(message.guild!);
-    const queue = queueExists
+    const queueCast = queueExists
       ? queueExists
       : player.createQueue(message.guild!, {
           metadata: {
             channel: message.channel,
-            filters: filters,
+            filters: { ...Util.defaultFilters },
           },
           autoSelfDeaf: true,
           initialVolume: 75,
           leaveOnEmptyCooldown: 3000,
         });
+    const queue = queueCast as Queue<QueueMetadata>;
+
+    queue.metadata!.filters.normalizer2 = true;
 
     let searchEngine = QueryResolver.resolve(input);
 
@@ -80,8 +80,8 @@ export default class extends Command {
       : queue.addTrack(song.tracks[0]);
 
     if (!queueExists) {
-      queue.play().then(() => {
-        queue.setFilters({ normalizer2: true });
+      await queue.play(undefined, { filtersUpdate: true }).then(async () => {
+        await queue.setFilters(queue.metadata?.filters);
       });
     }
   }

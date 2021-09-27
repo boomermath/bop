@@ -14,13 +14,11 @@ export default class TrackAddEvent extends Event {
     }
 
     public main(queue: Queue<QueueMetadata>, track: Track): void {
-        const channel = queue.metadata?.channel as TextChannel;
-
         if (queue.current === track) return;
 
         const newTrack = new MusicEmbed(track);
 
-        return void channel.send({
+        return void queue.metadata?.channel.send({
             embeds: [newTrack],
             components: [Util.buildDefaultActionRow()],
         });

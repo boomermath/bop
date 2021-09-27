@@ -14,9 +14,8 @@ export default class TrackAddEvent extends Event {
     }
 
     public main(queue: Queue<QueueMetadata>): void {
-        const channel = queue.metadata?.channel as TextChannel;
 
-        channel.send({
+        queue.metadata?.channel.send({
             embeds: [new Notification("Disconnected!")],
         });
 
