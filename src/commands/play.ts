@@ -80,9 +80,9 @@ export default class extends Command {
       : queue.addTrack(song.tracks[0]);
 
     if (!queueExists) {
-      await queue.play(undefined, { filtersUpdate: true }).then(async () => {
+      await queue.play().then(async () => {
         await queue.setFilters(queue.metadata?.filters);
-      });
+      }); 
     }
   }
 }
