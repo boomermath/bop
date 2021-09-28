@@ -11,7 +11,7 @@ export default class MessageEvent extends Event {
     }
 
     public main(message: Message): Awaited<void> {
-        if (message.author.bot || !message.guild) return;
+        if (message.author.bot || !message.guild || !message.content.startsWith(this.client.prefix)) return;
 
         const [cmd, ...args] = message.content
             .slice(this.client.prefix.length)
