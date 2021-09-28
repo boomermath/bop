@@ -19,7 +19,7 @@ export default class VoiceChannelInhibitor extends Inhibitor {
 
     main(message: Message): void {
         message.channel.send({
-            embeds: [new Notification(":speaker: Join my voice channel!")],
+            embeds: [new Notification(":speaker: Join a voice channel!")],
         });
     }
 }
