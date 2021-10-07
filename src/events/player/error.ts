@@ -17,7 +17,7 @@ export default class BotDisconnectEvent extends Event {
     this.client.console.error(error);
 
     if (error.message.includes("403")) return;
-    
+
     this.client.player.deleteQueue(queue.guild);
 
     queue.metadata?.channel.send({
