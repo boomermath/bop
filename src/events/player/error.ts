@@ -14,11 +14,14 @@ export default class BotDisconnectEvent extends Event {
   }
 
   public main(queue: Queue<QueueMetadata>, error: Error): void {
+    this.client.console.error(error);
+
+    if (error.message.includes("403")) return;
+    
     this.client.player.deleteQueue(queue.guild);
 
     queue.metadata?.channel.send({
       embeds: [new Notification("An error occurred, disconnecting!")],
     });
-    this.client.console.error(error);
   }
 }
