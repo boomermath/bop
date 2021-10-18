@@ -1,14 +1,24 @@
-import { Player } from "discord-player";
+import SpotifyPlugin from "@distube/spotify";
+import SoundCloudPlugin from "@distube/soundcloud";
+import DisTube from "distube";
 import { Client, Intents } from "discord.js";
 import { CommandStore, EventStore, InhibitorStore } from "./Stores";
 import BopConsole from "./util/Console";
 
 export default class BopClient extends Client {
   public prefix = "bop!";
-  public player: Player = new Player(this, {
+  public player: DisTube = new DisTube(this, {
+    searchSongs: 1,
+    searchCooldown: 5,
+    leaveOnEmpty: false,
+    leaveOnFinish: true,
+    leaveOnStop: true,
+    nsfw: true,
+    emitNewSongOnly: true,
     ytdlOptions: {
       filter: "audioonly",
     },
+    plugins: [new SoundCloudPlugin(), new SpotifyPlugin()],
   });
   public commands: CommandStore = new CommandStore(this, "../src/commands");
   public events: EventStore = new EventStore(this, "../src/events");
@@ -26,6 +36,13 @@ export default class BopClient extends Client {
         Intents.FLAGS.GUILDS,
       ],
     });
+  }
+
+  public hasMention(message: string) {
+    return (
+      message.startsWith(`<@!${this.user?.id}>`) ||
+      message.startsWith(`<@${this.user?.id}>`)
+    );
   }
 
   public async start(): Promise<void> {

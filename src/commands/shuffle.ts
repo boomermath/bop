@@ -14,7 +14,7 @@ export default class  extends Command {
     }
 
     public async main(message: Message, args: string[]): Promise<void> {
-        const queue = this.client.player.getQueue(message.guild!);
+        const queue = this.client.player.getQueue(message.guild!)!;
         queue.shuffle();
         message.channel.send({ embeds: [new Notification("Queue shuffled!")] });
     }

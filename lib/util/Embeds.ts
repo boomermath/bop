@@ -1,4 +1,4 @@
-import { Playlist, Track } from "discord-player";
+import { Playlist, Song } from "distube";
 import { MessageEmbed } from "discord.js";
 export const EMBED_COLOR = "BLUE";
 
@@ -12,28 +12,23 @@ export class Notification extends MessageEmbed {
 }
 
 export class MusicEmbed extends MessageEmbed {
-    constructor(music: Playlist | Track, nowplaying = false) {
-        const author =
-      music instanceof Playlist
-          ? music.tracks[0].requestedBy
-          : music.requestedBy;
-
+    constructor(music: Playlist | Song, nowplaying = false) {
         const description =
-      music instanceof Track
-          ? `${nowplaying ? "Now playing" : "Added"} **[${music.title}](${
+      music instanceof Song
+          ? `${nowplaying ? "Now playing" : "Added"} **[${music.name}](${
               music.url
-          })** by **${music.author}** | **[${music.duration}]**`
-          : `Added **${music.tracks.length}** tracks from **[${music.title}](${music.url})** by **[${music.author.name}](${music.author.url})**`;
+          })** by **[${music.uploader.name}](${music.uploader.url})**`
+          : `Added **${music.songs.length}** tracks from **[${music.name}](${music.url})**`;
 
         super({
-            description: description,
+            description: `${description} | **[${music.formattedDuration}]**`,
             color: EMBED_COLOR,
             thumbnail: {
                 url: music.thumbnail,
             },
             author: {
-                name: author.username,
-                icon_url: author.avatarURL()!,
+                name: music.user?.username,
+                icon_url: music.user?.avatarURL() as string,
             },
         });
     }

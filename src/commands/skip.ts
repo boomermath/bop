@@ -15,20 +15,17 @@ export default class extends Command {
     }
 
     public async main(message: Message, args: string[]): Promise<void> {
-        const queue = this.client.player.getQueue(message.guild!);
+        const queue = this.client.player.getQueue(message.guild!)!;
 
         if (!args.length) return void queue.skip();
 
         const index = parseInt(args[0]) - 1;
 
-        if (index < 0 || index > queue.tracks.length) {
+        if (index < 0 || index > queue.songs.length) {
             return void message.channel.send({
                 embeds: [new Notification("Invalid number to jump to!")],
             });
         }
-
-        this.client.console.log(index);
-        this.client.console.log(queue.tracks)
 
         queue.jump(index);
     }

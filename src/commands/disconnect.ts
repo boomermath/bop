@@ -12,10 +12,9 @@ export default class extends Command {
         });
     }
 
-    public async main(message: Message, args: string[]): Promise<void> {
-        this.client.player.emit(
-            "queueEnd",
-            this.client.player.getQueue(message.guild!)
-        );
+    public async main(message: Message): Promise<void> {
+        const queue = this.client.player.getQueue(message.guild!.id)!;
+
+        queue.stop();        
     }
 }

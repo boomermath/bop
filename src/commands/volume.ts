@@ -15,16 +15,16 @@ export default class extends Command {
     }
 
     public async main(message: Message, args: string[]): Promise<void> {
-        const queue = this.client.player.getQueue(message.guild!);
+        const queue = this.client.player.getQueue(message.guild!)!;
         const volume = parseInt(args[0]);
 
-        if (!volume) {
+        if (!volume && volume !== 0) {
             message.channel.send({
                 embeds: [new Notification(`Volume is ${queue.volume}`)],
             });
         } else if (volume < 0 || volume > 100) {
             message.channel.send({
-                embeds: [new Notification("Invalid volume!")],
+                embeds: [new Notification("Volume can only be between 0-100!")],
             });
         } else {
             queue.setVolume(volume);

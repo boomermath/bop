@@ -13,17 +13,16 @@ export default class  extends Command {
         });
     }
 
-    public async main(message: Message, args: string[]): Promise<void> {
-        const queue = this.client.player.getQueue(message.guild!);
+    public async main(message: Message): Promise<void> {
+        const queue = this.client.player.getQueue(message.guild!)!;
 
-        if (!queue.playing) {
+        if (queue.paused) {
             return void message.channel.send({
                 embeds: [new Notification("Music is already paused!")],
             });
         }
 
-        queue.playing = false;
-        queue.setPaused(true);
+        queue.pause();
 
         const resumeButton = new MessageActionRow().addComponents(
             new MessageButton()

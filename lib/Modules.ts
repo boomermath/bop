@@ -1,4 +1,4 @@
-import { Awaited, Message } from "discord.js";
+import {  Message } from "discord.js";
 import { sep } from "path";
 import BopClient from "./Client";
 
@@ -71,7 +71,7 @@ class Event extends Module {
       this.once = options.once ?? false;
   }
 
-  public main(...args: readonly unknown[]): Awaited<void> {
+  public main(...args: readonly unknown[]): void {
       throw new Error("Not implemented");
   }
 }

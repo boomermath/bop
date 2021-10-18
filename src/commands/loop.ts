@@ -1,16 +1,29 @@
-import { QueueRepeatMode } from "discord-player";
 import { Message } from "discord.js";
+import { RepeatMode } from "distube";
 import BopClient from "../../lib/Client";
 import { Command } from "../../lib/Modules";
 import { Notification } from "../../lib/util/Embeds";
 
-const options: Record<string, QueueRepeatMode> = {
-    o: QueueRepeatMode.OFF,
-    off: QueueRepeatMode.OFF,
-    t: QueueRepeatMode.TRACK,
-    track: QueueRepeatMode.TRACK,
-    q: QueueRepeatMode.QUEUE,
-    queue: QueueRepeatMode.QUEUE,
+const options: Record<string, RepeatMode> = {
+    o: RepeatMode.DISABLED,
+    off: RepeatMode.DISABLED,
+    t: RepeatMode.SONG,
+    track: RepeatMode.SONG,
+    s: RepeatMode.SONG,
+    song: RepeatMode.SONG,
+    q: RepeatMode.QUEUE,
+    queue: RepeatMode.QUEUE,
+};
+
+const getModeName = (mode: RepeatMode): string => {
+    switch (mode) {
+    case RepeatMode.DISABLED:
+        return "off";
+    case RepeatMode.SONG:
+        return "song";
+    default:
+        return "queue";
+    }
 };
 
 export default class extends Command {
@@ -24,19 +37,9 @@ export default class extends Command {
         });
     }
 
-    private getModeName(mode: QueueRepeatMode): string {
-        switch (mode) {
-        case QueueRepeatMode.OFF:
-            return "off";
-        case QueueRepeatMode.TRACK:
-            return "track";
-        default:
-            return "queue";
-        }
-    }
-
     public async main(message: Message, args: string[]): Promise<void> {
-        const queue = this.client.player.getQueue(message.guild!);
+        const queue = this.client.player.getQueue(message.guild!)!;
+
 
         if (args.length) {
             const loopMode = options[args[0].toLowerCase()];
@@ -53,9 +56,8 @@ export default class extends Command {
         message.channel.send({
             embeds: [
                 new Notification(
-                    `${
-                        args.length ? "Loop mode set to" : "Current loop mode is"
-                    } *${this.getModeName(queue.repeatMode)}*`
+                    `${args.length ? "Loop mode set to" : "Current loop mode is"
+                    } *${getModeName(queue.repeatMode)}*`
                 ),
             ],
         });

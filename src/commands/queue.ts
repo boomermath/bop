@@ -1,10 +1,22 @@
-import { Track } from "discord-player";
 import { EmbedField, Message } from "discord.js";
+import { Song } from "distube";
 import BopClient from "../../lib/Client";
 import { Command } from "../../lib/Modules";
 import { EMBED_COLOR } from "../../lib/util/Embeds";
 
-export default class  extends Command {
+const entry = (track: Song, index: number): EmbedField => {
+    return {
+        name: index === 0 ? "Queued" : "\u200b",
+        value: `**${index === 0 ? "Now Playing:" : `${index + 1}.`} [${
+            track.name
+        }](${track.url})** by ***[${track.uploader.name}](${
+            track.uploader.url
+        })*** | \`${track.formattedDuration}\` | ${track.user}`,
+        inline: false,
+    };
+};
+
+export default class extends Command {
     public constructor(client: BopClient, directory: string) {
         super(client, directory, {
             name: "queue",
@@ -14,23 +26,11 @@ export default class  extends Command {
         });
     }
 
-    private entry(track: Track, index: number): EmbedField {
-        return {
-            name: index === 0 ? "Queued" : "\u200b",
-            value: `**${index < 0 ? "Now Playing:" : `${index + 1}.`} [${
-                track.title
-            }](${track.url})** by ***${track.author}*** | \`${
-                track.duration
-            }\` ${track.views > 0 ? `| **${track.views.toLocaleString()} views**` : ""}`,
-            inline: false,
-        };
-    }
-
     public async main(message: Message): Promise<void> {
-        const queue = this.client.player.getQueue(message.guild!);
-        const queueEntries = queue.tracks.map(this.entry);
+        const queue = this.client.player.getQueue(message.guild!)!;
+        const queueEntries = queue.songs.map(entry);
 
-        if (!queueEntries.length) {
+        if (queueEntries.length < 2) {
             queueEntries.push({
                 name: "Nothing queued!",
                 value: "Add some music!",
@@ -42,7 +42,7 @@ export default class  extends Command {
             embeds: [
                 {
                     title: `Queue for ${message.guild?.name}`,
-                    description: this.entry(queue.current, -1).value,
+                    description: queueEntries.shift()?.value,
                     color: EMBED_COLOR,
                     fields: queueEntries,
                 },

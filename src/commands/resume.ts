@@ -14,16 +14,15 @@ export default class extends Command {
     }
 
     public async main(message: Message, args: string[]): Promise<void> {
-        const queue = this.client.player.getQueue(message.guild!);
+        const queue = this.client.player.getQueue(message.guild!)!;
 
-        if (queue.playing) {
+        if (!queue.paused) {
             return void message.channel.send({
                 embeds: [new Notification("Music is already playing!")],
             });
         }
 
-        queue.playing = true;
-        queue.setPaused(false);
+        queue.resume();
 
         const pauseButton = new MessageActionRow().addComponents(
             new MessageButton()

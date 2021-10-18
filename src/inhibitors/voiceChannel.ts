@@ -4,24 +4,24 @@ import { Command, Inhibitor } from "../../lib/Modules";
 import { Notification } from "../../lib/util/Embeds";
 
 export default class VoiceChannelInhibitor extends Inhibitor {
-  constructor(client: BopClient, directory: string) {
-    super(client, directory, {
-      name: "voiceChannel",
-    });
-  }
+    constructor(client: BopClient, directory: string) {
+        super(client, directory, {
+            name: "voiceChannel",
+        });
+    }
 
-  check(message: Message, command: Command): boolean {
-    if (!message.guild?.me?.voice.channel) return false;
+    check(message: Message, command: Command): boolean {
+        if (!message.guild?.me?.voice.channel) return false;
 
-    return (
-      !["queue", "nowplaying", "help"].includes(command.name) &&
+        return (
+            !["queue", "nowplaying", "help"].includes(command.name) &&
       message.member?.voice.channel !== message.guild?.me?.voice.channel
-    );
-  }
+        );
+    }
 
-  main(message: Message): void {
-    message.channel.send({
-      embeds: [new Notification("Join my voice channel!")],
-    });
-  }
+    main(message: Message): void {
+        message.channel.send({
+            embeds: [new Notification("Join my voice channel!")],
+        });
+    }
 }
