@@ -19,8 +19,8 @@ const filterAliases: Record<string, string> = {
   tm: "tremolo",
   ew: "earwax",
   kk: "karaoke",
-  "8d": "3D",
-  "8D": "3D",
+  "8d": "3d",
+  "8D": "3d",
 };
 
 export default class extends Command {
