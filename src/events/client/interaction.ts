@@ -15,18 +15,17 @@ export default class extends Event {
         interaction.deferUpdate();
 
         const command = this.client.commands.get(interaction.customId);
-
+        const message = interaction.message as Message;
+        
         if (!command) return;
 
-        const inhibited = this.client.inhibitors.run(
-      interaction.message as Message,
-      command
-        );
+        const inhibited = this.client.inhibitors.run(message, command);
 
         if (inhibited) return;
 
         try {
-            command.main(interaction.message as Message, []);
+            command.main(message, []);
+            this.client.console.log(`Command run by | ID: ${message.author.id} | Username: ${message.author.username}`);
         } catch (err) {
             this.client.console.error(err);
             interaction.reply(
