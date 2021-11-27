@@ -43,6 +43,7 @@ export default class extends Event {
 
     try {
       command.main(message, args);
+      this.client.console.log(`Command run by | ID: ${message.author.id} | Username: ${message.author.username}`);
     } catch (err) {
       this.client.console.error(err);
       message.channel.send(
