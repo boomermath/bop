@@ -42,15 +42,15 @@ export default class extends Command {
 
 
         if (args.length) {
-            const loopMode = options[args[0].toLowerCase()];
+            const mode = args[0].toLowerCase();
 
-            if (!loopMode) {
+            if (!(mode in options)) {
                 return void message.channel.send({
                     embeds: [new Notification(`Invalid loop mode "${args[0]}"!`)],
                 });
             }
 
-            queue.setRepeatMode(loopMode);
+            queue.setRepeatMode(options[mode]);
         }
 
         message.channel.send({
