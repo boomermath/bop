@@ -25,7 +25,7 @@ export default class extends Event {
 
         try {
             command.main(message, []);
-            this.client.console.log(`Command run by | ID: ${interaction.user.id} | Username: ${interaction.user.username}`);
+            this.client.console.log(`Interaction run by | ID: ${interaction.user.id} | Username: ${interaction.user.username}`);
         } catch (err) {
             this.client.console.error(err);
             interaction.reply(
