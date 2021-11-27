@@ -11,6 +11,8 @@ export default class extends Event {
     }
 
     public main(interaction: Interaction): void {
+        this.client.console.log(`Interaction run by | ID: ${interaction.user.id} | Username: ${interaction.user.username}`);
+        
         if (!interaction.isButton()) return;
         interaction.deferUpdate();
 
@@ -25,7 +27,6 @@ export default class extends Event {
 
         try {
             command.main(message, []);
-            this.client.console.log(`Interaction run by | ID: ${interaction.user.id} | Username: ${interaction.user.username}`);
         } catch (err) {
             this.client.console.error(err);
             interaction.reply(
