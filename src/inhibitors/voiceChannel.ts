@@ -12,16 +12,17 @@ export default class VoiceChannelInhibitor extends Inhibitor {
 
     check(message: Message, command: Command): boolean {
         if (!message.guild?.me?.voice.channel) return false;
+        if (!message.member?.voice.channel) return true;
 
         return (
             !["queue", "nowplaying", "help"].includes(command.name) &&
-      message.member?.voice.channel !== message.guild?.me?.voice.channel
+      message.member?.voice.channel?.id !== message.guild?.me?.voice.channel?.id
         );
     }
 
     main(message: Message): void {
         message.channel.send({
-            embeds: [new Notification("Join my voice channel!")],
+            embeds: [new Notification(`Join ${message.member?.voice.channel ? "my" : "a"} voice channel!`)],
         });
     }
 }
